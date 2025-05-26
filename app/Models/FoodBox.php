@@ -28,4 +28,13 @@ class FoodBox extends Model
     {
         return $this->belongsToMany(Menu::class, 'box_menus');
     }
+
+    public function reviews()
+    {
+    return $this->hasMany(\App\Models\Review::class);
+    }
+
+    
+
+
 }
