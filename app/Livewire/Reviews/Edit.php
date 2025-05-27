@@ -11,51 +11,51 @@ class Edit extends Component
     public int $reviewId;
     public int $rating;
     public string $comment;
+    public string $title = '';
+    public $date_of_experience;
 
     /**
-     * Mount the component with a Review instance, auto-resolved by Livewire via route model binding.
+     * Mount the component with a Review instance.
      */
     public function mount(Review $review)
     {
-        // Ensure user owns this review
         abort_unless($review->user_id === Auth::id(), 403);
 
-        // Initialize component properties
         $this->reviewId = $review->id;
-        $this->rating   = $review->rating;
-        $this->comment  = $review->comment;
+        $this->rating = $review->rating;
+        $this->comment = $review->comment;
+        $this->title = $review->title ?? '';
+        $this->date_of_experience = $review->date_of_experience;
     }
 
     /**
-     * Update the existing review.
+     * Update the review.
      */
     public function updateReview()
     {
         $this->validate([
-            'rating'  => 'required|integer|min:1|max:5',
+            'rating' => 'required|integer|min:1|max:5',
             'comment' => 'required|string',
+            'title' => 'nullable|string|max:255',
+            'date_of_experience' => 'nullable|date',
         ]);
 
         $review = Review::findOrFail($this->reviewId);
         abort_unless($review->user_id === Auth::id(), 403);
 
         $review->update([
-            'rating'  => $this->rating,
+            'rating' => $this->rating,
             'comment' => $this->comment,
+            'title' => $this->title,
+            'date_of_experience' => $this->date_of_experience,
         ]);
 
         session()->flash('success', 'Review updated successfully.');
-
-        // Redirect back to the reviews list
         return redirect()->route('reviews.view');
     }
 
-    public function render()
-    {
-        return view('livewire.reviews.edit');
-    }
     /**
-     * Delete the existing review.
+     * Delete the review.
      */
     public function deleteReview()
     {
@@ -65,8 +65,12 @@ class Edit extends Component
         $review->delete();
 
         session()->flash('success', 'Review deleted successfully.');
-
-        // Redirect back to the reviews list
         return redirect()->route('reviews.view');
     }
+
+    public function render()
+    {
+        return view('livewire.reviews.edit');
+    }
 }
+

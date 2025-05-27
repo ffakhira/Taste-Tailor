@@ -1,28 +1,30 @@
-<div class="p-6">
-    <h2 class="text-2xl font-bold mb-4">All Reviews</h2>
+<div class="p-6 bg-white rounded shadow max-w-4xl mx-auto">
+    <h2 class="text-2xl font-bold mb-4">Feedback and Review</h2>
 
-    @forelse($reviews as $review)
-        <div class="border rounded p-4 mb-4">
-            <h3 class="font-semibold">
-                {{ $review->foodBox->name }} 
-            </h3>
-            <p class="text-gray-600">
-                By: {{ $review->user->name }} 
-                on {{ $review->created_at->format('d M Y') }}
-            </p>
+    @forelse ($reviews as $review)
+        <div class="border rounded p-5 mb-5 bg-gray-50">
+            <!-- Food Box Name -->
+            <h3 class="text-xl font-semibold mb-2">{{ $review->foodBox->name }}</h3>
 
             <!-- Star Rating -->
-            <p class="mt-2">
-                <strong>Rating:</strong>
+            <div class="flex items-center space-x-1 text-yellow-400 text-2xl mb-3">
                 @for ($i = 1; $i <= 5; $i++)
                     {!! $i <= $review->rating ? '&#9733;' : '&#9734;' !!}
                 @endfor
-            </p>
+            </div>
 
-            <p><strong>Comment:</strong> {{ $review->comment }}</p>
+            <!-- Comment -->
+            <p class="mb-3 text-gray-700">{{ $review->comment }}</p>
+
+            <!-- Reviewer & Date -->
+            <p class="text-sm text-gray-500">
+                <strong>By:</strong> {{ $review->user->name }} 
+                &middot; 
+                <strong>On:</strong> {{ $review->created_at->format('d M Y') }}
+            </p>
         </div>
     @empty
-        <p>No reviews found.</p>
+        <p class="text-center text-gray-600">No reviews found.</p>
     @endforelse
 </div>
 
