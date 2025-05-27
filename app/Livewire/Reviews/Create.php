@@ -37,6 +37,7 @@ class Create extends Component
             'comment'      => $this->comment,
         ]);
 
+        
         session()->flash('success', 'Review created successfully.');
         return redirect()->route('reviews.view');
     }

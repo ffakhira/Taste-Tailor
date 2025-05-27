@@ -75,7 +75,15 @@
             {{ session('success') }}
         </x-action-message>
     </form>
+
+    <script>
+    window.addEventListener('review-submitted', function () {
+        alert('Thank you for your feedback!');
+    });
+</script>
 </div>
+
+
 
 
 
